@@ -614,21 +614,31 @@
 
     <div class="section">
 
-        <div class="section-title">
+    <div class="section-title">
 
-            <h2>📝 ANOTAÇÕES</h2>
+        <h2>📝 ANOTAÇÕES</h2>
 
-            <span>REGISTRO PESSOAL</span>
-
-        </div>
-
-        <div class="notes">
-
-            Nenhuma anotação registrada.
-
-        </div>
+        <span>REGISTRO PESSOAL</span>
 
     </div>
+
+    <div class="notes" id="notes">
+    </div>
+
+    <div class="notes-controls">
+
+        <textarea
+            id="novaAnotacao"
+            placeholder="Escreva uma anotação..."
+        ></textarea>
+
+        <button onclick="adicionarAnotacao()">
+            ➕ ADICIONAR ANOTAÇÃO
+        </button>
+
+    </div>
+
+</div>
 
 
     <footer>
