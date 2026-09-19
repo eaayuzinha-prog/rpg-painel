@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Painel da GM</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+            linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px),
+            #080808;
+        background-size: 40px 40px;
+        color: #ddd;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 30px 15px;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(255,255,255,0.015) 4px
+        );
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+    }
+
+    header {
+        border: 1px solid #333;
+        background: #101010;
+        padding: 25px;
+        margin-bottom: 25px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    header::after {
+        content: "RESTRICTED";
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        color: #333;
+        font-size: 12px;
+        letter-spacing: 3px;
+    }
+
+    h1 {
+        margin: 0 0 8px;
+        color: #eee;
+        font-size: 28px;
+        letter-spacing: 3px;
+    }
+
+    .subtitle {
+        color: #666;
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    .warning {
+        margin-top: 18px;
+        padding: 10px;
+        border-left: 3px solid #666;
+        background: #151515;
+        color: #888;
+        font-size: 12px;
+    }
+
+    .character {
+        background: #101010;
+        border: 1px solid #2d2d2d;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .character-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #292929;
+        padding-bottom: 12px;
+    }
+
+    .character-title h2 {
+        margin: 0;
+        font-size: 18px;
+        letter-spacing: 2px;
+    }
+
+    .status {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .status-box {
+        background: #151515;
+        border: 1px solid #292929;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .status-name {
+        color: #777;
+        font-size: 11px;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .value {
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        color: #ddd;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    button {
+        background: #1b1b1b;
+        border: 1px solid #3a3a3a;
+        color: #ddd;
+        padding: 7px 13px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    button:hover {
+        background: #292929;
+        border-color: #666;
+    }
+
+    .save {
+        width: 100%;
+        margin-top: 10px;
+        padding: 14px;
+        background: #171717;
+        border: 1px solid #555;
+        font-size: 13px;
+        letter-spacing: 2px;
+    }
+
+    .save:hover {
+        background: #222;
+    }
+
+    .saved {
+        text-align: center;
+        margin-top: 12px;
+        color: #777;
+        font-size: 11px;
+        min-height: 15px;
+    }
+
+    .back {
+        display: block;
+        text-align: center;
+        margin-top: 25px;
+        color: #666;
+        text-decoration: none;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .back:hover {
+        color: #aaa;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 35px;
+        color: #333;
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
+
+    @media (max-width: 650px) {
+        .status {
+            grid-template-columns: 1fr;
+        }
+
+        header::after {
+            display: none;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>🔐 PAINEL DA GM</h1>
+
+        <div class="subtitle">
+            ARQUIVO DE CONTROLE // ACESSO RESTRITO
+        </div>
+
+        <div class="warning">
+            SOMENTE A GM DEVE ALTERAR OS STATUS DOS PERSONAGENS.
+        </div>
+    </header>
+
+
+    <!-- PERSONAGEM 01 -->
+
+    <section class="character">
+
+        <div class="character-title">
+            <h2>PERSONAGEM 01</h2>
+        </div>
+
+        <div class="status">
+
+            <div class="status-box">
+                <div class="status-name">❤️ VIDA</div>
+                <div class="value" id="vida1">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(1, 'vida', -1)">−</button>
+                    <button onclick="alterar(1, 'vida', 1)">+</button>
+                </div>
+            </div>
+
+
+            <div class="status-box">
+                <div class="status-name">🛡️ RESISTÊNCIA</div>
+                <div class="value" id="resistencia1">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(1, 'resistencia', -1)">−</button>
+                    <button onclick="alterar(1, 'resistencia', 1)">+</button>
+                </div>
+            </div>
+
+
+            <div class="status-box">
+                <div class="status-name">🧠 SANIDADE</div>
+                <div class="value" id="sanidade1">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(1, 'sanidade', -1)">−</button>
+                    <button onclick="alterar(1, 'sanidade', 1)">+</button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PERSONAGEM 02 -->
+
+    <section class="character">
+
+        <div class="character-title">
+            <h2>PERSONAGEM 02</h2>
+        </div>
+
+        <div class="status">
+
+            <div class="status-box">
+                <div class="status-name">❤️ VIDA</div>
+                <div class="value" id="vida2">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(2, 'vida', -1)">−</button>
+                    <button onclick="alterar(2, 'vida', 1)">+</button>
+                </div>
+            </div>
+
+
+            <div class="status-box">
+                <div class="status-name">🛡️ RESISTÊNCIA</div>
+                <div class="value" id="resistencia2">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(2, 'resistencia', -1)">−</button>
+                    <button onclick="alterar(2, 'resistencia', 1)">+</button>
+                </div>
+            </div>
+
+
+            <div class="status-box">
+                <div class="status-name">🧠 SANIDADE</div>
+                <div class="value" id="sanidade2">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(2, 'sanidade', -1)">−</button>
+                    <button onclick="alterar(2, 'sanidade', 1)">+</button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PERSONAGEM 03 -->
+
+    <section class="character">
+
+        <div class="character-title">
+            <h2>PERSONAGEM 03</h2>
+        </div>
+
+        <div class="status">
+
+            <div class="status-box">
+                <div class="status-name">❤️ VIDA</div>
+                <div class="value" id="vida3">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(3, 'vida', -1)">−</button>
+                    <button onclick="alterar(3, 'vida', 1)">+</button>
+                </div>
+            </div>
+
+
+            <div class="status-box">
+                <div class="status-name">🛡️ RESISTÊNCIA</div>
+                <div class="value" id="resistencia3">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(3, 'resistencia', -1)">−</button>
+                    <button onclick="alterar(3, 'resistencia', 1)">+</button>
+                </div>
+            </div>
+
+
+            <div class="status-box">
+                <div class="status-name">🧠 SANIDADE</div>
+                <div class="value" id="sanidade3">10/10</div>
+
+                <div class="controls">
+                    <button onclick="alterar(3, 'sanidade', -1)">−</button>
+                    <button onclick="alterar(3, 'sanidade', 1)">+</button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <button class="save" onclick="salvar()">
+        💾 SALVAR ALTERAÇÕES
+    </button>
+
+    <div class="saved" id="mensagem"></div>
+
+    <a class="back" href="index.html">
+        ← VOLTAR PARA A FICHA
+    </a>
+
+    <footer>
+        ARQUIVO CONFIDENCIAL // SISTEMA DE CONTROLE DA GM
+    </footer>
+
+</div>
+
+
+<script>
+
+let personagens = JSON.parse(localStorage.getItem("rpgPersonagens")) || {
+
+    1: {
+        vida: 10,
+        resistencia: 10,
+        sanidade: 10
+    },
+
+    2: {
+        vida: 10,
+        resistencia: 10,
+        sanidade: 10
+    },
+
+    3: {
+        vida: 10,
+        resistencia: 10,
+        sanidade: 10
+    }
+
+};
+
+
+function alterar(personagem, status, quantidade) {
+
+    let atual = personagens[personagem][status];
+
+    atual += quantidade;
+
+    if (atual < 0) {
+        atual = 0;
+    }
+
+    if (atual > 10) {
+        atual = 10;
+    }
+
+    personagens[personagem][status] = atual;
+
+    atualizarTela();
+}
+
+
+function atualizarTela() {
+
+    for (let i = 1; i <= 3; i++) {
+
+        document.getElementById("vida" + i).textContent =
+            personagens[i].vida + "/10";
+
+        document.getElementById("resistencia" + i).textContent =
+            personagens[i].resistencia + "/10";
+
+        document.getElementById("sanidade" + i).textContent =
+            personagens[i].sanidade + "/10";
+
+    }
+
+}
+
+
+function salvar() {
+
+    localStorage.setItem(
+        "rpgPersonagens",
+        JSON.stringify(personagens)
+    );
+
+    document.getElementById("mensagem").textContent =
+        "✓ ALTERAÇÕES SALVAS NO DISPOSITIVO.";
+
+    setTimeout(() => {
+
+        document.getElementById("mensagem").textContent = "";
+
+    }, 2500);
+
+}
+
+
+atualizarTela();
+
+</script>
+
+</body>
+</html>
