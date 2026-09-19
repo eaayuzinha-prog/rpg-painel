@@ -729,6 +729,40 @@ function atualizarFicha() {
 atualizarFicha();
 setInterval(atualizarFicha, 1000);
 
+function adicionarItem() {
+
+    const nome = document.getElementById("novoItem").value.trim();
+    const descricao = document.getElementById("descricaoItem").value.trim();
+
+    if (nome === "") {
+        return;
+    }
+
+    const inventario = document.getElementById("inventory");
+
+    const item = document.createElement("div");
+    item.className = "item";
+
+    item.innerHTML = `
+        <strong>${nome}</strong>
+        <span>${descricao || "Nenhuma descrição."}</span>
+        <button onclick="removerItem(this)">🗑️</button>
+    `;
+
+    inventario.appendChild(item);
+
+    document.getElementById("novoItem").value = "";
+    document.getElementById("descricaoItem").value = "";
+}
+
+
+function removerItem(botao) {
+
+    botao.parentElement.remove();
+
+}
+
+
 </script>
 
 </body>
