@@ -729,18 +729,31 @@ function atualizarFicha() {
 atualizarFicha();
 setInterval(atualizarFicha, 1000);
 
-function adicionarItem() {
+function carregarInventario() {
 
-    const nome = document.getElementById("novoItem").value.trim();
-    const descricao = document.getElementById("descricaoItem").value.trim();
+    const chave = "inventarioPersonagem" + personagemAtual;
 
-    if (nome === "") {
-        return;
-    }
+    const itensSalvos = JSON.parse(localStorage.getItem(chave)) || [];
+
+    const inventario = document.getElementById("inventory");
+
+    inventario.innerHTML = "";
+
+    itensSalvos.forEach(function(item) {
+
+        criarItemNaTela(item.nome, item.descricao);
+
+    });
+
+}
+
+
+function criarItemNaTela(nome, descricao) {
 
     const inventario = document.getElementById("inventory");
 
     const item = document.createElement("div");
+
     item.className = "item";
 
     item.innerHTML = `
@@ -751,16 +764,63 @@ function adicionarItem() {
 
     inventario.appendChild(item);
 
+}
+
+
+function adicionarItem() {
+
+    const nome = document.getElementById("novoItem").value.trim();
+
+    const descricao = document.getElementById("descricaoItem").value.trim();
+
+    if (nome === "") {
+        return;
+    }
+
+    const chave = "inventarioPersonagem" + personagemAtual;
+
+    const itens = JSON.parse(localStorage.getItem(chave)) || [];
+
+    itens.push({
+        nome: nome,
+        descricao: descricao
+    });
+
+    localStorage.setItem(chave, JSON.stringify(itens));
+
+    criarItemNaTela(nome, descricao);
+
     document.getElementById("novoItem").value = "";
+
     document.getElementById("descricaoItem").value = "";
+
 }
 
 
 function removerItem(botao) {
 
-    botao.parentElement.remove();
+    const item = botao.parentElement;
+
+    const nome = item.querySelector("strong").textContent;
+
+    const chave = "inventarioPersonagem" + personagemAtual;
+
+    let itens = JSON.parse(localStorage.getItem(chave)) || [];
+
+    itens = itens.filter(function(item) {
+
+        return item.nome !== nome;
+
+    });
+
+    localStorage.setItem(chave, JSON.stringify(itens));
+
+    item.remove();
 
 }
+
+
+carregarInventario();
 
 
 </script>
