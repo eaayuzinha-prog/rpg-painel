@@ -43,8 +43,6 @@
             padding: 35px 0;
         }
 
-        /* CABEÇALHO */
-
         header {
             border: 1px solid #292929;
             background: #101010;
@@ -91,8 +89,6 @@
             clip-path: inset(55% 0 20% 0);
         }
 
-        /* PERSONAGEM */
-
         .character {
             display: grid;
             grid-template-columns: 200px 1fr;
@@ -133,8 +129,6 @@
             font-size: 14px;
         }
 
-        /* STATUS */
-
         .status {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -170,9 +164,8 @@
             height: 100%;
             width: 100%;
             background: #d8d8d8;
+            transition: width 0.3s ease;
         }
-
-        /* SEÇÕES */
 
         .section {
             background: #101010;
@@ -201,8 +194,6 @@
             letter-spacing: 2px;
         }
 
-        /* ATRIBUTOS */
-
         .attributes {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -227,8 +218,6 @@
             font-weight: bold;
         }
 
-        /* HABILIDADES */
-
         .cards {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -252,8 +241,6 @@
             font-size: 13px;
             line-height: 1.5;
         }
-
-        /* INVENTÁRIO */
 
         .inventory {
             display: grid;
@@ -282,8 +269,6 @@
             border: 1px solid #555;
         }
 
-        /* PSICOLÓGICO */
-
         .psychological {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -309,8 +294,6 @@
             line-height: 1.5;
         }
 
-        /* ANOTAÇÕES */
-
         .notes {
             min-height: 180px;
             background: #0c0c0c;
@@ -320,8 +303,6 @@
             line-height: 1.8;
         }
 
-        /* RODAPÉ */
-
         footer {
             text-align: center;
             padding: 25px;
@@ -329,8 +310,6 @@
             font-size: 10px;
             letter-spacing: 2px;
         }
-
-        /* RESPONSIVO */
 
         @media (max-width: 750px) {
 
@@ -366,8 +345,6 @@
 
 <div class="container">
 
-    <!-- CABEÇALHO -->
-
     <header>
 
         <h1 class="glitch" data-text="ARQUIVO DE PERSONAGEM">
@@ -380,8 +357,6 @@
 
     </header>
 
-
-    <!-- IDENTIDADE -->
 
     <div class="character">
 
@@ -409,7 +384,7 @@
     </div>
 
 
-    <!-- STATUS -->
+    <!-- STATUS CONTROLADOS PELA GM -->
 
     <div class="status">
 
@@ -417,12 +392,12 @@
 
             <h3>❤️ VIDA</h3>
 
-            <div class="status-number">
+            <div class="status-number" id="vida">
                 10 / 10
             </div>
 
             <div class="bar">
-                <div class="fill"></div>
+                <div class="fill" id="barraVida"></div>
             </div>
 
         </div>
@@ -432,12 +407,12 @@
 
             <h3>🛡️ RESISTÊNCIA</h3>
 
-            <div class="status-number">
+            <div class="status-number" id="resistencia">
                 10 / 10
             </div>
 
             <div class="bar">
-                <div class="fill"></div>
+                <div class="fill" id="barraResistencia"></div>
             </div>
 
         </div>
@@ -447,20 +422,18 @@
 
             <h3>🧠 SANIDADE</h3>
 
-            <div class="status-number">
+            <div class="status-number" id="sanidade">
                 10 / 10
             </div>
 
             <div class="bar">
-                <div class="fill"></div>
+                <div class="fill" id="barraSanidade"></div>
             </div>
 
         </div>
 
     </div>
 
-
-    <!-- ATRIBUTOS -->
 
     <div class="section">
 
@@ -509,8 +482,6 @@
     </div>
 
 
-    <!-- HABILIDADES -->
-
     <div class="section">
 
         <div class="section-title">
@@ -524,41 +495,24 @@
         <div class="cards">
 
             <div class="card">
-
                 <strong>Habilidade principal</strong>
-
-                <p>
-                    Descrição da habilidade.
-                </p>
-
+                <p>Descrição da habilidade.</p>
             </div>
 
             <div class="card">
-
                 <strong>Habilidade secundária</strong>
-
-                <p>
-                    Descrição da habilidade.
-                </p>
-
+                <p>Descrição da habilidade.</p>
             </div>
 
             <div class="card">
-
                 <strong>Conhecimento</strong>
-
-                <p>
-                    Conhecimento especial do personagem.
-                </p>
-
+                <p>Conhecimento especial do personagem.</p>
             </div>
 
         </div>
 
     </div>
 
-
-    <!-- INVENTÁRIO -->
 
     <div class="section">
 
@@ -617,8 +571,6 @@
     </div>
 
 
-    <!-- PSICOLÓGICO -->
-
     <div class="section">
 
         <div class="section-title">
@@ -635,9 +587,7 @@
 
                 <h3>MAIOR MEDO</h3>
 
-                <p>
-                    Informação não registrada.
-                </p>
+                <p>Informação não registrada.</p>
 
             </div>
 
@@ -645,9 +595,7 @@
 
                 <h3>MEMÓRIA IMPORTANTE</h3>
 
-                <p>
-                    Informação não registrada.
-                </p>
+                <p>Informação não registrada.</p>
 
             </div>
 
@@ -655,9 +603,7 @@
 
                 <h3>ALGO QUE NÃO LEMBRA</h3>
 
-                <p>
-                    Informação não registrada.
-                </p>
+                <p>Informação não registrada.</p>
 
             </div>
 
@@ -665,8 +611,6 @@
 
     </div>
 
-
-    <!-- ANOTAÇÕES -->
 
     <div class="section">
 
@@ -694,6 +638,97 @@
     </footer>
 
 </div>
+
+
+<script>
+
+/*
+    PERSONAGEM DESTA FICHA
+
+    Por enquanto estamos usando o PERSONAGEM 01.
+
+    Quando você decidir que esta ficha pertence ao
+    personagem 02 ou 03, basta mudar:
+
+    personagemAtual = 1;
+
+    para:
+
+    personagemAtual = 2;
+
+    ou:
+
+    personagemAtual = 3;
+*/
+
+const personagemAtual = 1;
+
+
+/* Pega os dados salvos pelo painel da GM */
+
+function atualizarFicha() {
+
+    const dados =
+        JSON.parse(localStorage.getItem("rpgPersonagens")) || {
+
+            1: {
+                vida: 10,
+                resistencia: 10,
+                sanidade: 10
+            },
+
+            2: {
+                vida: 10,
+                resistencia: 10,
+                sanidade: 10
+            },
+
+            3: {
+                vida: 10,
+                resistencia: 10,
+                sanidade: 10
+            }
+
+        };
+
+
+    const personagem = dados[personagemAtual];
+
+
+    /* VIDA */
+
+    document.getElementById("vida").textContent =
+        personagem.vida + " / 10";
+
+    document.getElementById("barraVida").style.width =
+        (personagem.vida * 10) + "%";
+
+
+    /* RESISTÊNCIA */
+
+    document.getElementById("resistencia").textContent =
+        personagem.resistencia + " / 10";
+
+    document.getElementById("barraResistencia").style.width =
+        (personagem.resistencia * 10) + "%";
+
+
+    /* SANIDADE */
+
+    document.getElementById("sanidade").textContent =
+        personagem.sanidade + " / 10";
+
+    document.getElementById("barraSanidade").style.width =
+        (personagem.sanidade * 10) + "%";
+
+}
+
+
+/* Carrega os valores quando a página abre */
+
+atualizarFicha();
+
+</script>
 
 </body>
 </html>
