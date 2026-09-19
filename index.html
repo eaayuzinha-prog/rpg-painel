@@ -832,6 +832,103 @@ function removerItem(botao) {
 
 carregarInventario();
 
+function carregarAnotacoes() {
+
+    const chave = "anotacoesPersonagem" + personagemAtual;
+
+    const anotacoesSalvas =
+        JSON.parse(localStorage.getItem(chave)) || [];
+
+    const notas = document.getElementById("notes");
+
+    notas.innerHTML = "";
+
+    anotacoesSalvas.forEach(function(anotacao) {
+
+        criarAnotacaoNaTela(anotacao);
+
+    });
+
+}
+
+
+function criarAnotacaoNaTela(texto) {
+
+    const notas = document.getElementById("notes");
+
+    const anotacao = document.createElement("div");
+
+    anotacao.className = "note";
+
+    anotacao.innerHTML = `
+        <span>${texto}</span>
+        <button onclick="removerAnotacao(this)">🗑️</button>
+    `;
+
+    notas.appendChild(anotacao);
+
+}
+
+
+function adicionarAnotacao() {
+
+    const campo = document.getElementById("novaAnotacao");
+
+    const texto = campo.value.trim();
+
+    if (texto === "") {
+        return;
+    }
+
+    const chave = "anotacoesPersonagem" + personagemAtual;
+
+    const anotacoes =
+        JSON.parse(localStorage.getItem(chave)) || [];
+
+    anotacoes.push(texto);
+
+    localStorage.setItem(
+        chave,
+        JSON.stringify(anotacoes)
+    );
+
+    criarAnotacaoNaTela(texto);
+
+    campo.value = "";
+
+}
+
+
+function removerAnotacao(botao) {
+
+    const anotacao = botao.parentElement;
+
+    const texto =
+        anotacao.querySelector("span").textContent;
+
+    const chave = "anotacoesPersonagem" + personagemAtual;
+
+    let anotacoes =
+        JSON.parse(localStorage.getItem(chave)) || [];
+
+    anotacoes = anotacoes.filter(function(anotacao) {
+
+        return anotacao !== texto;
+
+    });
+
+    localStorage.setItem(
+        chave,
+        JSON.stringify(anotacoes)
+    );
+
+    anotacao.remove();
+
+}
+
+
+carregarAnotacoes();
+
 
 </script>
 
