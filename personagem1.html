@@ -516,59 +516,59 @@
 
     <div class="section">
 
-    <div class="section-title">
+        <div class="section-title">
 
-        <h2>🎒 INVENTÁRIO</h2>
+            <h2>🎒 INVENTÁRIO</h2>
 
-        <span>OBJETOS REGISTRADOS</span>
-
-    </div>
-
-    <div class="inventory" id="inventory">
-
-        <div class="item">
-
-            <strong>🔦 Lanterna</strong>
-
-            <span>Bateria pela metade.</span>
-
-            <button onclick="removerItem(this)">🗑️</button>
+            <span>OBJETOS REGISTRADOS</span>
 
         </div>
 
-        <div class="item">
+        <div class="inventory" id="inventory">
 
-            <strong>📻 Rádio</strong>
+            <div class="item">
 
-            <span>Apresenta interferência.</span>
+                <strong>🔦 Lanterna</strong>
 
-            <button onclick="removerItem(this)">🗑️</button>
+                <span>Bateria pela metade.</span>
+
+                <button onclick="removerItem(this)">🗑️</button>
+
+            </div>
+
+            <div class="item">
+
+                <strong>📻 Rádio</strong>
+
+                <span>Apresenta interferência.</span>
+
+                <button onclick="removerItem(this)">🗑️</button>
+
+            </div>
+
+        </div>
+
+        <div class="inventory-controls">
+
+            <input
+                type="text"
+                id="novoItem"
+                placeholder="Nome do item..."
+            >
+
+            <input
+                type="text"
+                id="descricaoItem"
+                placeholder="Descrição..."
+            >
+
+            <button onclick="adicionarItem()">
+                ➕ ADICIONAR
+            </button>
 
         </div>
 
     </div>
-
-    <div class="inventory-controls">
-
-        <input
-            type="text"
-            id="novoItem"
-            placeholder="Nome do item..."
-        >
-
-        <input
-            type="text"
-            id="descricaoItem"
-            placeholder="Descrição..."
-        >
-
-        <button onclick="adicionarItem()">
-            ➕ ADICIONAR
-        </button>
-
-    </div>
-
-</div>
 
 
     <div class="section">
@@ -614,31 +614,31 @@
 
     <div class="section">
 
-    <div class="section-title">
+        <div class="section-title">
 
-        <h2>📝 ANOTAÇÕES</h2>
+            <h2>📝 ANOTAÇÕES</h2>
 
-        <span>REGISTRO PESSOAL</span>
+            <span>REGISTRO PESSOAL</span>
+
+        </div>
+
+        <div class="notes" id="notes">
+        </div>
+
+        <div class="notes-controls">
+
+            <textarea
+                id="novaAnotacao"
+                placeholder="Escreva uma anotação..."
+            ></textarea>
+
+            <button onclick="adicionarAnotacao()">
+                ➕ ADICIONAR ANOTAÇÃO
+            </button>
+
+        </div>
 
     </div>
-
-    <div class="notes" id="notes">
-    </div>
-
-    <div class="notes-controls">
-
-        <textarea
-            id="novaAnotacao"
-            placeholder="Escreva uma anotação..."
-        ></textarea>
-
-        <button onclick="adicionarAnotacao()">
-            ➕ ADICIONAR ANOTAÇÃO
-        </button>
-
-    </div>
-
-</div>
 
 
     <footer>
@@ -650,62 +650,61 @@
 </div>
 
 
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
 /*
     PERSONAGEM DESTA FICHA
 
-    Por enquanto estamos usando o PERSONAGEM 01.
+    Esta página representa o PERSONAGEM 01.
 
-    Quando você decidir que esta ficha pertence ao
-    personagem 02 ou 03, basta mudar:
-
-    personagemAtual = 1;
-
-    para:
-
-    personagemAtual = 2;
-
-    ou:
-
-    personagemAtual = 3;
+    Personagem 02 usará id 2.
+    Personagem 03 usará id 3.
 */
 
 const personagemAtual = 1;
 
 
-/* Pega os dados salvos pelo painel da GM */
+/*
+    CONEXÃO COM SUPABASE
+*/
 
-function atualizarFicha() {
+const SUPABASE_URL =
+    "https://rtcqluiigmrsrwppxiqq.supabase.co";
 
-    const dados =
-        JSON.parse(localStorage.getItem("rpgPersonagens")) || {
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_WI6YAcFW6DAvfpzxFfTU_w_TjaUVt90";
 
-            1: {
-                vida: 10,
-                resistencia: 10,
-                sanidade: 10
-            },
-
-            2: {
-                vida: 10,
-                resistencia: 10,
-                sanidade: 10
-            },
-
-            3: {
-                vida: 10,
-                resistencia: 10,
-                sanidade: 10
-            }
-
-        };
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
 
 
-    const personagem = dados[personagemAtual];
+/*
+    VALORES INICIAIS
+*/
+
+let personagem = {
+
+    vida: 10,
+
+    resistencia: 10,
+
+    sanidade: 10
+
+};
 
 
-    /* VIDA */
+/*
+    ATUALIZAR A TELA
+*/
+
+function atualizarTela() {
 
     document.getElementById("vida").textContent =
         personagem.vida + " / 10";
@@ -714,16 +713,12 @@ function atualizarFicha() {
         (personagem.vida * 10) + "%";
 
 
-    /* RESISTÊNCIA */
-
     document.getElementById("resistencia").textContent =
         personagem.resistencia + " / 10";
 
     document.getElementById("barraResistencia").style.width =
         (personagem.resistencia * 10) + "%";
 
-
-    /* SANIDADE */
 
     document.getElementById("sanidade").textContent =
         personagem.sanidade + " / 10";
@@ -734,43 +729,160 @@ function atualizarFicha() {
 }
 
 
-/* Carrega os valores quando a página abre */
+/*
+    BUSCAR STATUS NO SUPABASE
+*/
 
-atualizarFicha();
-setInterval(atualizarFicha, 1000);
+async function carregarStatus() {
+
+    const { data, error } =
+        await supabaseClient
+            .from("personagens")
+            .select("vida, resistencia, sanidade")
+            .eq("id", personagemAtual)
+            .single();
+
+
+    if (error) {
+
+        console.error(
+            "Erro ao carregar status:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (!data) {
+        return;
+    }
+
+
+    personagem.vida =
+        data.vida ?? 10;
+
+    personagem.resistencia =
+        data.resistencia ?? 10;
+
+    personagem.sanidade =
+        data.sanidade ?? 10;
+
+
+    atualizarTela();
+
+}
+
+
+/*
+    SINCRONIZAÇÃO EM TEMPO REAL
+
+    Quando a GM alterar o personagem no Supabase,
+    esta página recebe a mudança automaticamente.
+*/
+
+const canalStatus =
+    supabaseClient
+        .channel("personagem-" + personagemAtual)
+
+        .on(
+            "postgres_changes",
+            {
+                event: "UPDATE",
+                schema: "public",
+                table: "personagens",
+                filter: "id=eq." + personagemAtual
+            },
+            function(payload) {
+
+                console.log(
+                    "STATUS ATUALIZADO:",
+                    payload.new
+                );
+
+
+                personagem.vida =
+                    payload.new.vida ?? 10;
+
+                personagem.resistencia =
+                    payload.new.resistencia ?? 10;
+
+                personagem.sanidade =
+                    payload.new.sanidade ?? 10;
+
+
+                atualizarTela();
+
+            }
+        )
+
+        .subscribe();
+
+
+/*
+    CARREGAR STATUS AO ABRIR
+*/
+
+carregarStatus();
+
+
+/* =====================================================
+   INVENTÁRIO
+   ===================================================== */
+
 
 function carregarInventario() {
 
-    const chave = "inventarioPersonagem" + personagemAtual;
+    const chave =
+        "inventarioPersonagem" + personagemAtual;
 
-    const itensSalvos = JSON.parse(localStorage.getItem(chave)) || [];
+    const itensSalvos =
+        JSON.parse(
+            localStorage.getItem(chave)
+        ) || [];
 
-    const inventario = document.getElementById("inventory");
+
+    const inventario =
+        document.getElementById("inventory");
+
 
     inventario.innerHTML = "";
 
+
     itensSalvos.forEach(function(item) {
 
-        criarItemNaTela(item.nome, item.descricao);
+        criarItemNaTela(
+            item.nome,
+            item.descricao
+        );
 
     });
 
 }
 
 
-function criarItemNaTela(nome, descricao) {
+function criarItemNaTela(
+    nome,
+    descricao
+) {
 
-    const inventario = document.getElementById("inventory");
+    const inventario =
+        document.getElementById("inventory");
 
-    const item = document.createElement("div");
+
+    const item =
+        document.createElement("div");
+
 
     item.className = "item";
+
 
     item.innerHTML = `
         <strong>${nome}</strong>
         <span>${descricao || "Nenhuma descrição."}</span>
         <button onclick="removerItem(this)">🗑️</button>
     `;
+
 
     inventario.appendChild(item);
 
@@ -779,51 +891,103 @@ function criarItemNaTela(nome, descricao) {
 
 function adicionarItem() {
 
-    const nome = document.getElementById("novoItem").value.trim();
+    const nome =
+        document
+            .getElementById("novoItem")
+            .value
+            .trim();
 
-    const descricao = document.getElementById("descricaoItem").value.trim();
+
+    const descricao =
+        document
+            .getElementById("descricaoItem")
+            .value
+            .trim();
+
 
     if (nome === "") {
         return;
     }
 
-    const chave = "inventarioPersonagem" + personagemAtual;
 
-    const itens = JSON.parse(localStorage.getItem(chave)) || [];
+    const chave =
+        "inventarioPersonagem" + personagemAtual;
+
+
+    const itens =
+        JSON.parse(
+            localStorage.getItem(chave)
+        ) || [];
+
 
     itens.push({
+
         nome: nome,
+
         descricao: descricao
+
     });
 
-    localStorage.setItem(chave, JSON.stringify(itens));
 
-    criarItemNaTela(nome, descricao);
+    localStorage.setItem(
+        chave,
+        JSON.stringify(itens)
+    );
 
-    document.getElementById("novoItem").value = "";
 
-    document.getElementById("descricaoItem").value = "";
+    criarItemNaTela(
+        nome,
+        descricao
+    );
+
+
+    document.getElementById(
+        "novoItem"
+    ).value = "";
+
+
+    document.getElementById(
+        "descricaoItem"
+    ).value = "";
 
 }
 
 
 function removerItem(botao) {
 
-    const item = botao.parentElement;
+    const item =
+        botao.parentElement;
 
-    const nome = item.querySelector("strong").textContent;
 
-    const chave = "inventarioPersonagem" + personagemAtual;
+    const nome =
+        item
+            .querySelector("strong")
+            .textContent;
 
-    let itens = JSON.parse(localStorage.getItem(chave)) || [];
 
-    itens = itens.filter(function(item) {
+    const chave =
+        "inventarioPersonagem" + personagemAtual;
 
-        return item.nome !== nome;
 
-    });
+    let itens =
+        JSON.parse(
+            localStorage.getItem(chave)
+        ) || [];
 
-    localStorage.setItem(chave, JSON.stringify(itens));
+
+    itens =
+        itens.filter(function(item) {
+
+            return item.nome !== nome;
+
+        });
+
+
+    localStorage.setItem(
+        chave,
+        JSON.stringify(itens)
+    );
+
 
     item.remove();
 
@@ -832,20 +996,36 @@ function removerItem(botao) {
 
 carregarInventario();
 
+
+/* =====================================================
+   ANOTAÇÕES
+   ===================================================== */
+
+
 function carregarAnotacoes() {
 
-    const chave = "anotacoesPersonagem" + personagemAtual;
+    const chave =
+        "anotacoesPersonagem" + personagemAtual;
+
 
     const anotacoesSalvas =
-        JSON.parse(localStorage.getItem(chave)) || [];
+        JSON.parse(
+            localStorage.getItem(chave)
+        ) || [];
 
-    const notas = document.getElementById("notes");
+
+    const notas =
+        document.getElementById("notes");
+
 
     notas.innerHTML = "";
 
+
     anotacoesSalvas.forEach(function(anotacao) {
 
-        criarAnotacaoNaTela(anotacao);
+        criarAnotacaoNaTela(
+            anotacao
+        );
 
     });
 
@@ -854,16 +1034,22 @@ function carregarAnotacoes() {
 
 function criarAnotacaoNaTela(texto) {
 
-    const notas = document.getElementById("notes");
+    const notas =
+        document.getElementById("notes");
 
-    const anotacao = document.createElement("div");
+
+    const anotacao =
+        document.createElement("div");
+
 
     anotacao.className = "note";
+
 
     anotacao.innerHTML = `
         <span>${texto}</span>
         <button onclick="removerAnotacao(this)">🗑️</button>
     `;
+
 
     notas.appendChild(anotacao);
 
@@ -872,27 +1058,42 @@ function criarAnotacaoNaTela(texto) {
 
 function adicionarAnotacao() {
 
-    const campo = document.getElementById("novaAnotacao");
+    const campo =
+        document.getElementById(
+            "novaAnotacao"
+        );
 
-    const texto = campo.value.trim();
+
+    const texto =
+        campo.value.trim();
+
 
     if (texto === "") {
         return;
     }
 
-    const chave = "anotacoesPersonagem" + personagemAtual;
+
+    const chave =
+        "anotacoesPersonagem" + personagemAtual;
+
 
     const anotacoes =
-        JSON.parse(localStorage.getItem(chave)) || [];
+        JSON.parse(
+            localStorage.getItem(chave)
+        ) || [];
+
 
     anotacoes.push(texto);
+
 
     localStorage.setItem(
         chave,
         JSON.stringify(anotacoes)
     );
 
+
     criarAnotacaoNaTela(texto);
+
 
     campo.value = "";
 
@@ -901,26 +1102,39 @@ function adicionarAnotacao() {
 
 function removerAnotacao(botao) {
 
-    const anotacao = botao.parentElement;
+    const anotacao =
+        botao.parentElement;
+
 
     const texto =
-        anotacao.querySelector("span").textContent;
+        anotacao
+            .querySelector("span")
+            .textContent;
 
-    const chave = "anotacoesPersonagem" + personagemAtual;
+
+    const chave =
+        "anotacoesPersonagem" + personagemAtual;
+
 
     let anotacoes =
-        JSON.parse(localStorage.getItem(chave)) || [];
+        JSON.parse(
+            localStorage.getItem(chave)
+        ) || [];
 
-    anotacoes = anotacoes.filter(function(anotacao) {
 
-        return anotacao !== texto;
+    anotacoes =
+        anotacoes.filter(function(anotacao) {
 
-    });
+            return anotacao !== texto;
+
+        });
+
 
     localStorage.setItem(
         chave,
         JSON.stringify(anotacoes)
     );
+
 
     anotacao.remove();
 
@@ -928,7 +1142,6 @@ function removerAnotacao(botao) {
 
 
 carregarAnotacoes();
-
 
 </script>
 
