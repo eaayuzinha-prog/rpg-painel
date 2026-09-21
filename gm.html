@@ -42,6 +42,95 @@
         margin: auto;
     }
 
+    /* LOGIN */
+
+    #loginArea {
+        max-width: 450px;
+        margin: 80px auto;
+        background: #101010;
+        border: 1px solid #333;
+        padding: 30px;
+        position: relative;
+    }
+
+    #loginArea::after {
+        content: "RESTRICTED";
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        color: #333;
+        font-size: 10px;
+        letter-spacing: 3px;
+    }
+
+    #loginArea h1 {
+        margin: 0 0 8px;
+        color: #eee;
+        font-size: 25px;
+        letter-spacing: 3px;
+    }
+
+    .login-subtitle {
+        color: #666;
+        font-size: 11px;
+        letter-spacing: 2px;
+        margin-bottom: 25px;
+    }
+
+    .login-label {
+        display: block;
+        color: #777;
+        font-size: 11px;
+        letter-spacing: 1px;
+        margin-bottom: 7px;
+        margin-top: 15px;
+    }
+
+    .login-input {
+        width: 100%;
+        padding: 12px;
+        background: #151515;
+        border: 1px solid #333;
+        color: #ddd;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .login-input:focus {
+        border-color: #666;
+    }
+
+    .login-button {
+        width: 100%;
+        margin-top: 22px;
+        padding: 14px;
+        background: #171717;
+        border: 1px solid #555;
+        color: #ddd;
+        cursor: pointer;
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    .login-button:hover {
+        background: #222;
+        border-color: #777;
+    }
+
+    #loginMensagem {
+        text-align: center;
+        margin-top: 15px;
+        min-height: 18px;
+        color: #888;
+        font-size: 11px;
+    }
+
+    /* PAINEL */
+
+    #painel {
+        display: none;
+    }
+
     header {
         border: 1px solid #333;
         background: #101010;
@@ -81,6 +170,22 @@
         background: #151515;
         color: #888;
         font-size: 12px;
+    }
+
+    .logout {
+        margin-top: 15px;
+        background: transparent;
+        border: 1px solid #333;
+        color: #777;
+        padding: 7px 12px;
+        cursor: pointer;
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+
+    .logout:hover {
+        color: #ccc;
+        border-color: #666;
     }
 
     .character {
@@ -152,6 +257,11 @@
         border-color: #666;
     }
 
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
     .save {
         width: 100%;
         margin-top: 10px;
@@ -201,7 +311,8 @@
             grid-template-columns: 1fr;
         }
 
-        header::after {
+        header::after,
+        #loginArea::after {
             display: none;
         }
     }
@@ -212,181 +323,275 @@
 
 <div class="container">
 
-    <header>
-        <h1>🔐 PAINEL DA GM</h1>
+    <!-- LOGIN DA GM -->
 
-        <div class="subtitle">
+    <div id="loginArea">
+
+        <h1>🔐 ACESSO DA GM</h1>
+
+        <div class="login-subtitle">
             ARQUIVO DE CONTROLE // ACESSO RESTRITO
         </div>
 
-        <div class="warning">
-            SOMENTE A GM DEVE ALTERAR OS STATUS DOS PERSONAGENS.
-        </div>
-    </header>
+        <label class="login-label" for="email">
+            E-MAIL
+        </label>
+
+        <input
+            class="login-input"
+            type="email"
+            id="email"
+            placeholder="E-mail da GM"
+            autocomplete="username"
+        >
+
+        <label class="login-label" for="senha">
+            SENHA
+        </label>
+
+        <input
+            class="login-input"
+            type="password"
+            id="senha"
+            placeholder="Senha"
+            autocomplete="current-password"
+        >
+
+        <button class="login-button" onclick="entrar()">
+            🔓 ENTRAR NO PAINEL
+        </button>
+
+        <div id="loginMensagem"></div>
+
+    </div>
 
 
-    <!-- PERSONAGEM 01 -->
+    <!-- PAINEL DA GM -->
 
-    <section class="character">
+    <div id="painel">
 
-        <div class="character-title">
-            <h2>PERSONAGEM 01</h2>
-        </div>
+        <header>
 
-        <div class="status">
+            <h1>🔐 PAINEL DA GM</h1>
 
-            <div class="status-box">
-                <div class="status-name">❤️ VIDA</div>
-                <div class="value" id="vida1">10/10</div>
-
-                <div class="controls">
-                    <button onclick="alterar(1, 'vida', -1)">−</button>
-                    <button onclick="alterar(1, 'vida', 1)">+</button>
-                </div>
+            <div class="subtitle">
+                ARQUIVO DE CONTROLE // ACESSO RESTRITO
             </div>
 
-
-            <div class="status-box">
-                <div class="status-name">🛡️ RESISTÊNCIA</div>
-                <div class="value" id="resistencia1">10/10</div>
-
-                <div class="controls">
-                    <button onclick="alterar(1, 'resistencia', -1)">−</button>
-                    <button onclick="alterar(1, 'resistencia', 1)">+</button>
-                </div>
+            <div class="warning">
+                SOMENTE A GM DEVE ALTERAR OS STATUS DOS PERSONAGENS.
             </div>
 
+            <button class="logout" onclick="sair()">
+                ↪ SAIR DA CONTA
+            </button>
 
-            <div class="status-box">
-                <div class="status-name">🧠 SANIDADE</div>
-                <div class="value" id="sanidade1">10/10</div>
+        </header>
 
-                <div class="controls">
-                    <button onclick="alterar(1, 'sanidade', -1)">−</button>
-                    <button onclick="alterar(1, 'sanidade', 1)">+</button>
-                </div>
+
+        <!-- PERSONAGEM 01 -->
+
+        <section class="character">
+
+            <div class="character-title">
+                <h2>PERSONAGEM 01</h2>
             </div>
 
-        </div>
+            <div class="status">
 
-    </section>
+                <div class="status-box">
+                    <div class="status-name">❤️ VIDA</div>
 
+                    <div class="value" id="vida1">10/10</div>
 
-    <!-- PERSONAGEM 02 -->
-
-    <section class="character">
-
-        <div class="character-title">
-            <h2>PERSONAGEM 02</h2>
-        </div>
-
-        <div class="status">
-
-            <div class="status-box">
-                <div class="status-name">❤️ VIDA</div>
-                <div class="value" id="vida2">10/10</div>
-
-                <div class="controls">
-                    <button onclick="alterar(2, 'vida', -1)">−</button>
-                    <button onclick="alterar(2, 'vida', 1)">+</button>
+                    <div class="controls">
+                        <button onclick="alterar(1, 'vida', -1)">−</button>
+                        <button onclick="alterar(1, 'vida', 1)">+</button>
+                    </div>
                 </div>
+
+
+                <div class="status-box">
+                    <div class="status-name">🛡️ RESISTÊNCIA</div>
+
+                    <div class="value" id="resistencia1">10/10</div>
+
+                    <div class="controls">
+                        <button onclick="alterar(1, 'resistencia', -1)">−</button>
+                        <button onclick="alterar(1, 'resistencia', 1)">+</button>
+                    </div>
+                </div>
+
+
+                <div class="status-box">
+                    <div class="status-name">🧠 SANIDADE</div>
+
+                    <div class="value" id="sanidade1">10/10</div>
+
+                    <div class="controls">
+                        <button onclick="alterar(1, 'sanidade', -1)">−</button>
+                        <button onclick="alterar(1, 'sanidade', 1)">+</button>
+                    </div>
+                </div>
+
             </div>
 
+        </section>
 
-            <div class="status-box">
-                <div class="status-name">🛡️ RESISTÊNCIA</div>
-                <div class="value" id="resistencia2">10/10</div>
 
-                <div class="controls">
-                    <button onclick="alterar(2, 'resistencia', -1)">−</button>
-                    <button onclick="alterar(2, 'resistencia', 1)">+</button>
-                </div>
+        <!-- PERSONAGEM 02 -->
+
+        <section class="character">
+
+            <div class="character-title">
+                <h2>PERSONAGEM 02</h2>
             </div>
 
+            <div class="status">
 
-            <div class="status-box">
-                <div class="status-name">🧠 SANIDADE</div>
-                <div class="value" id="sanidade2">10/10</div>
+                <div class="status-box">
+                    <div class="status-name">❤️ VIDA</div>
 
-                <div class="controls">
-                    <button onclick="alterar(2, 'sanidade', -1)">−</button>
-                    <button onclick="alterar(2, 'sanidade', 1)">+</button>
+                    <div class="value" id="vida2">10/10</div>
+
+                    <div class="controls">
+                        <button onclick="alterar(2, 'vida', -1)">−</button>
+                        <button onclick="alterar(2, 'vida', 1)">+</button>
+                    </div>
                 </div>
+
+
+                <div class="status-box">
+                    <div class="status-name">🛡️ RESISTÊNCIA</div>
+
+                    <div class="value" id="resistencia2">10/10</div>
+
+                    <div class="controls">
+                        <button onclick="alterar(2, 'resistencia', -1)">−</button>
+                        <button onclick="alterar(2, 'resistencia', 1)">+</button>
+                    </div>
+                </div>
+
+
+                <div class="status-box">
+                    <div class="status-name">🧠 SANIDADE</div>
+
+                    <div class="value" id="sanidade2">10/10</div>
+
+                    <div class="controls">
+                        <button onclick="alterar(2, 'sanidade', -1)">−</button>
+                        <button onclick="alterar(2, 'sanidade', 1)">+</button>
+                    </div>
+                </div>
+
             </div>
 
-        </div>
-
-    </section>
+        </section>
 
 
-    <!-- PERSONAGEM 03 -->
+        <!-- PERSONAGEM 03 -->
 
-    <section class="character">
+        <section class="character">
 
-        <div class="character-title">
-            <h2>PERSONAGEM 03</h2>
-        </div>
-
-        <div class="status">
-
-            <div class="status-box">
-                <div class="status-name">❤️ VIDA</div>
-                <div class="value" id="vida3">10/10</div>
-
-                <div class="controls">
-                    <button onclick="alterar(3, 'vida', -1)">−</button>
-                    <button onclick="alterar(3, 'vida', 1)">+</button>
-                </div>
+            <div class="character-title">
+                <h2>PERSONAGEM 03</h2>
             </div>
 
+            <div class="status">
 
-            <div class="status-box">
-                <div class="status-name">🛡️ RESISTÊNCIA</div>
-                <div class="value" id="resistencia3">10/10</div>
+                <div class="status-box">
+                    <div class="status-name">❤️ VIDA</div>
 
-                <div class="controls">
-                    <button onclick="alterar(3, 'resistencia', -1)">−</button>
-                    <button onclick="alterar(3, 'resistencia', 1)">+</button>
+                    <div class="value" id="vida3">10/10</div>
+
+                    <div class="controls">
+                        <button onclick="alterar(3, 'vida', -1)">−</button>
+                        <button onclick="alterar(3, 'vida', 1)">+</button>
+                    </div>
                 </div>
+
+
+                <div class="status-box">
+                    <div class="status-name">🛡️ RESISTÊNCIA</div>
+
+                    <div class="value" id="resistencia3">10/10</div>
+
+                    <div class="controls">
+                        <button onclick="alterar(3, 'resistencia', -1)">−</button>
+                        <button onclick="alterar(3, 'resistencia', 1)">+</button>
+                    </div>
+                </div>
+
+
+                <div class="status-box">
+                    <div class="status-name">🧠 SANIDADE</div>
+
+                    <div class="value" id="sanidade3">10/10</div>
+
+                    <div class="controls">
+                        <button onclick="alterar(3, 'sanidade', -1)">−</button>
+                        <button onclick="alterar(3, 'sanidade', 1)">+</button>
+                    </div>
+                </div>
+
             </div>
 
-
-            <div class="status-box">
-                <div class="status-name">🧠 SANIDADE</div>
-                <div class="value" id="sanidade3">10/10</div>
-
-                <div class="controls">
-                    <button onclick="alterar(3, 'sanidade', -1)">−</button>
-                    <button onclick="alterar(3, 'sanidade', 1)">+</button>
-                </div>
-            </div>
-
-        </div>
-
-    </section>
+        </section>
 
 
-    <button class="save" onclick="salvar()">
-        💾 SALVAR ALTERAÇÕES
-    </button>
+        <button class="save" id="botaoSalvar" onclick="salvar()">
+            💾 SALVAR ALTERAÇÕES
+        </button>
 
-    <div class="saved" id="mensagem"></div>
+        <div class="saved" id="mensagem"></div>
 
-    <a class="back" href="index.html">
-        ← VOLTAR PARA A FICHA
-    </a>
+        <a class="back" href="index.html">
+            ← VOLTAR PARA A FICHA
+        </a>
 
-    <footer>
-        ARQUIVO CONFIDENCIAL // SISTEMA DE CONTROLE DA GM
-    </footer>
+        <footer>
+            ARQUIVO CONFIDENCIAL // SISTEMA DE CONTROLE DA GM
+        </footer>
+
+    </div>
 
 </div>
 
 
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
-let personagens = JSON.parse(localStorage.getItem("rpgPersonagens")) || {
+const SUPABASE_URL =
+    "https://rtcqluiigmrsrwppxiqq.supabase.co";
 
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_WI6YAcFW6DAvfpzxFfTU_w_TjaUVt90";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/*
+    ID DA CONTA DA GM
+*/
+
+const GM_USER_ID =
+    "e3d5a2bd-e0b6-4fe8-b768-a23f51d42a5d";
+
+
+/*
+    VALORES TEMPORÁRIOS DO PAINEL
+
+    Eles começam vazios e serão preenchidos
+    com os dados do Supabase.
+*/
+
+let personagens = {
     1: {
         vida: 10,
         resistencia: 10,
@@ -404,41 +609,264 @@ let personagens = JSON.parse(localStorage.getItem("rpgPersonagens")) || {
         resistencia: 10,
         sanidade: 10
     }
-
 };
 
 
-function alterar(personagem, status, quantidade) {
+/*
+    MOSTRAR MENSAGEM
+*/
 
-    let atual = personagens[personagem][status];
+function mostrarMensagem(texto) {
+
+    const mensagem =
+        document.getElementById("mensagem");
+
+    mensagem.textContent = texto;
+
+}
+
+
+/*
+    LOGIN
+*/
+
+async function entrar() {
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const senha =
+        document.getElementById("senha").value;
+
+    const mensagem =
+        document.getElementById("loginMensagem");
+
+    if (!email || !senha) {
+
+        mensagem.textContent =
+            "⚠️ PREENCHA E-MAIL E SENHA.";
+
+        return;
+    }
+
+
+    mensagem.textContent =
+        "VERIFICANDO ACESSO...";
+
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: senha
+
+        });
+
+
+    if (error) {
+
+        console.error(error);
+
+        mensagem.textContent =
+            "❌ E-MAIL OU SENHA INCORRETOS.";
+
+        return;
+    }
+
+
+    /*
+        CONFERE SE A CONTA LOGADA
+        É REALMENTE A CONTA DA GM.
+    */
+
+    if (!data.user || data.user.id !== GM_USER_ID) {
+
+        await supabaseClient.auth.signOut();
+
+        mensagem.textContent =
+            "❌ ESTA CONTA NÃO POSSUI ACESSO À GM.";
+
+        return;
+    }
+
+
+    mensagem.textContent = "";
+
+    document.getElementById("loginArea").style.display =
+        "none";
+
+    document.getElementById("painel").style.display =
+        "block";
+
+
+    await carregarPersonagens();
+
+}
+
+
+/*
+    VERIFICAR SE JÁ EXISTE
+    UMA SESSÃO SALVA
+*/
+
+async function verificarSessao() {
+
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+    const sessao = data.session;
+
+
+    if (!sessao) {
+        return;
+    }
+
+
+    if (
+        !sessao.user ||
+        sessao.user.id !== GM_USER_ID
+    ) {
+
+        await supabaseClient.auth.signOut();
+
+        return;
+    }
+
+
+    document.getElementById("loginArea").style.display =
+        "none";
+
+    document.getElementById("painel").style.display =
+        "block";
+
+
+    await carregarPersonagens();
+
+}
+
+
+/*
+    CARREGAR PERSONAGENS DO SUPABASE
+*/
+
+async function carregarPersonagens() {
+
+    mostrarMensagem(
+        "CARREGANDO DADOS DO BANCO..."
+    );
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("personagens")
+            .select("id, nome, vida, resistencia, sanidade")
+            .in("id", [1, 2, 3]);
+
+
+    if (error) {
+
+        console.error(error);
+
+        mostrarMensagem(
+            "❌ ERRO AO CARREGAR OS PERSONAGENS."
+        );
+
+        return;
+    }
+
+
+    /*
+        Coloca os dados encontrados
+        dentro do painel.
+    */
+
+    data.forEach(function(personagem) {
+
+        if (!personagens[personagem.id]) {
+            return;
+        }
+
+
+        personagens[personagem.id].vida =
+            personagem.vida ?? 10;
+
+        personagens[personagem.id].resistencia =
+            personagem.resistencia ?? 10;
+
+        personagens[personagem.id].sanidade =
+            personagem.sanidade ?? 10;
+
+    });
+
+
+    atualizarTela();
+
+
+    mostrarMensagem("");
+
+}
+
+
+/*
+    ALTERAR VALORES
+*/
+
+function alterar(
+    personagem,
+    status,
+    quantidade
+) {
+
+    let atual =
+        personagens[personagem][status];
+
 
     atual += quantidade;
+
 
     if (atual < 0) {
         atual = 0;
     }
 
+
     if (atual > 10) {
         atual = 10;
     }
 
-    personagens[personagem][status] = atual;
+
+    personagens[personagem][status] =
+        atual;
+
 
     atualizarTela();
+
 }
 
+
+/*
+    ATUALIZAR TELA
+*/
 
 function atualizarTela() {
 
     for (let i = 1; i <= 3; i++) {
 
-        document.getElementById("vida" + i).textContent =
+        document.getElementById(
+            "vida" + i
+        ).textContent =
             personagens[i].vida + "/10";
 
-        document.getElementById("resistencia" + i).textContent =
+
+        document.getElementById(
+            "resistencia" + i
+        ).textContent =
             personagens[i].resistencia + "/10";
 
-        document.getElementById("sanidade" + i).textContent =
+
+        document.getElementById(
+            "sanidade" + i
+        ).textContent =
             personagens[i].sanidade + "/10";
 
     }
@@ -446,26 +874,122 @@ function atualizarTela() {
 }
 
 
-function salvar() {
+/*
+    SALVAR NO SUPABASE
+*/
 
-    localStorage.setItem(
-        "rpgPersonagens",
-        JSON.stringify(personagens)
+async function salvar() {
+
+    const botao =
+        document.getElementById("botaoSalvar");
+
+
+    botao.disabled = true;
+
+    botao.textContent =
+        "⏳ SALVANDO...";
+
+
+    mostrarMensagem(
+        "ENVIANDO ALTERAÇÕES AO BANCO..."
     );
 
-    document.getElementById("mensagem").textContent =
-        "✓ ALTERAÇÕES SALVAS NO DISPOSITIVO.";
 
-    setTimeout(() => {
+    try {
 
-        document.getElementById("mensagem").textContent = "";
+        for (let i = 1; i <= 3; i++) {
 
-    }, 2500);
+            const { error } =
+                await supabaseClient
+                    .from("personagens")
+                    .update({
+
+                        vida:
+                            personagens[i].vida,
+
+                        resistencia:
+                            personagens[i].resistencia,
+
+                        sanidade:
+                            personagens[i].sanidade
+
+                    })
+                    .eq("id", i);
+
+
+            if (error) {
+
+                console.error(
+                    "Erro no personagem " + i,
+                    error
+                );
+
+                throw error;
+            }
+
+        }
+
+
+        mostrarMensagem(
+            "✓ ALTERAÇÕES SALVAS NO SUPABASE."
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensagem(
+            "❌ NÃO FOI POSSÍVEL SALVAR. VERIFIQUE AS POLÍTICAS DO SUPABASE."
+        );
+
+    }
+
+
+    botao.disabled = false;
+
+    botao.textContent =
+        "💾 SALVAR ALTERAÇÕES";
+
+
+    setTimeout(function() {
+
+        mostrarMensagem("");
+
+    }, 3500);
 
 }
 
 
-atualizarTela();
+/*
+    SAIR DA CONTA
+*/
+
+async function sair() {
+
+    await supabaseClient.auth.signOut();
+
+    document.getElementById("painel").style.display =
+        "none";
+
+    document.getElementById("loginArea").style.display =
+        "block";
+
+    document.getElementById("email").value = "";
+
+    document.getElementById("senha").value = "";
+
+    document.getElementById("loginMensagem").textContent =
+        "✓ SESSÃO ENCERRADA.";
+
+}
+
+
+/*
+    INICIAR
+*/
+
+verificarSessao();
 
 </script>
 
