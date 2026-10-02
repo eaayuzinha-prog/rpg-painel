@@ -935,16 +935,15 @@ async function salvar() {
         );
 
 
-    } catch (error) {
+   } catch (error) {
 
-        console.error(error);
+    console.error("ERRO REAL DO SUPABASE:", error);
 
-        mostrarMensagem(
-            "❌ NÃO FOI POSSÍVEL SALVAR. VERIFIQUE AS POLÍTICAS DO SUPABASE."
-        );
+    mostrarMensagem(
+        "❌ ERRO: " + (error.message || "erro desconhecido")
+    );
 
-    }
-
+}
 
     botao.disabled = false;
 
