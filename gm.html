@@ -752,6 +752,44 @@ async function verificarSessao() {
 
 async function carregarPersonagens() {
 
+    // VERIFICA QUAL CONTA ESTÁ REALMENTE LOGADA
+    const { data: usuario, error: erroUsuario } =
+        await supabaseClient.auth.getUser();
+
+    console.log(
+        "===================================="
+    );
+
+    console.log(
+        "USUÁRIO LOGADO:",
+        usuario?.user?.id
+    );
+
+    console.log(
+        "ID ESPERADO DA GM:",
+        GM_USER_ID
+    );
+
+    console.log(
+        "É A GM?",
+        usuario?.user?.id === GM_USER_ID
+    );
+
+    console.log(
+        "===================================="
+    );
+
+
+    if (erroUsuario) {
+
+        console.error(
+            "ERRO AO VERIFICAR USUÁRIO:",
+            erroUsuario
+        );
+
+    }
+
+
     mostrarMensagem(
         "CARREGANDO DADOS DO BANCO..."
     );
@@ -760,13 +798,18 @@ async function carregarPersonagens() {
     const { data, error } =
         await supabaseClient
             .from("personagens")
-            .select("id, nome, vida, resistencia, sanidade")
+            .select(
+                "id, nome, vida, resistencia, sanidade"
+            )
             .in("id", [1, 2, 3]);
 
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "ERRO AO CARREGAR PERSONAGENS:",
+            error
+        );
 
         mostrarMensagem(
             "❌ ERRO AO CARREGAR OS PERSONAGENS."
@@ -775,11 +818,6 @@ async function carregarPersonagens() {
         return;
     }
 
-
-    /*
-        Coloca os dados encontrados
-        dentro do painel.
-    */
 
     data.forEach(function(personagem) {
 
@@ -806,7 +844,6 @@ async function carregarPersonagens() {
     mostrarMensagem("");
 
 }
-
 
 /*
     ALTERAR VALORES
